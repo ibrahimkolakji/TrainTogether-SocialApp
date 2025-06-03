@@ -1,0 +1,169 @@
+.post {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 15px;
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .user {
+    display: flex;
+    align-items: center;
+    gap: 10px; // Add spacing between profile picture and name
+
+    .profile-picture {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .details {
+      display: flex;
+      flex-direction: column;
+
+      .name {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .date {
+        font-size: 14px;
+        color: #777;
+      }
+    }
+
+    .dots {
+      cursor: pointer;
+      font-size: 20px;
+      color: #777;
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center-align title and description */
+    gap: 10px;
+
+    .sport-tag {
+      position: absolute; /* Position the tag to the right */
+      top: 30px;
+      right: 30px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+
+      span:first-child {
+        font-size: 20px; /* Emoji size */
+      }
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      text-align: center; /* Center-align title */
+    }
+
+    .description {
+      font-size: 14px;
+      color: #555;
+      text-align: center; /* Center-align description */
+      line-height: 1.5;
+    }
+  }
+
+  .info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      color: #777;
+      font-size: 14px;
+      transition: color 0.3s ease;
+
+      svg {
+        font-size: 20px;
+      }
+
+      &:hover {
+        color: #333;
+      }
+
+      .liked {
+        color: #e63946;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .post {
+    padding: 10px;
+  }
+
+  .post .user .profile-picture {
+    width: 35px;
+    height: 35px;
+  }
+
+  .post .user .name {
+    font-size: 14px;
+  }
+
+  .post .user .date {
+    font-size: 12px;
+  }
+
+  .post-content .title {
+    font-size: 16px;
+  }
+
+  .post-content .description {
+    font-size: 12px;
+  }
+
+  .post-footer .action {
+    font-size: 12px;
+  }
+
+  .post .content .sport-tag {
+    top: 10px; /* Adjust position for smaller screens */
+    right: 10px;
+    font-size: 14px;
+  }
+
+  .post .content .sport-tag span:first-child {
+    font-size: 18px; /* Adjust emoji size for smaller screens */
+  }
+
+  .post .content .title {
+    font-size: 16px;
+  }
+
+  .post .content .description {
+    font-size: 12px;
+  }
+}
