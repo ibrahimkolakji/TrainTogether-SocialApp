@@ -1,82 +1,112 @@
-@import "../../style.scss";
-.leftBar{
-flex: 2;
-position: sticky;
-top: 60px;
-height: calc(100vh - 70px);
-overflow: scroll;
- @include mobile{
-          display: none;
-        }
- -webkit-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
-        -moz-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
-        box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
-&::-webkit-scrollbar {
-    display: none;
+@use "../../style.scss" as *; // @import durch @use ersetzt, falls kompatibel
+
+.leftBar {
+  flex: 2;
+  position: sticky;
+  top: 60px;
+  height: calc(100vh - 70px);
+  overflow: scroll;
+
+   @include mobile {
+  width: 60px;
+  flex: none;
+
+  .container {
+    padding: 10px;
+
+    .user span,
+    .item span {
+      display: none;
+    }
+
+    .user,
+    .item {
+      justify-content: center;
+    }
+
+    .user img,
+    .item img {
+      width: 24px;
+      height: 10px;
+    }
+  }
 }
-    .container{
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        
-        .user{
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            color: black;
-            img{
-                width: 30px;
-                height: 30px;
-                border-radius: 50px;
-                object-fit: cover;
-            }
 
-            span{
-                font-size: 14px;
-            }
-        }
 
-        .item{
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            color: black;
-            img{
-                width: 30px;
-                height: 30px;
-                border-radius: 50px;
-                object-fit: cover;
-            }
+  -webkit-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
+  -moz-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
+  box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.09);
 
-            span{
-                font-size: 14px;
-            }
-        }
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: black;
+
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50px;
+        object-fit: cover;
+      }
+
+      span {
+        font-size: 14px;
+      }
     }
-    .settings{
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 100px;
-        padding-top: 450px;
 
-         .item{
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            img{
-                width: 30px;
-                height: 30px;
-                border-radius: 50px;
-                object-fit: cover;
-            }
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: black;
 
-            span{
-                font-size: 14px;
-            }
-        }
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50px;
+        object-fit: cover;
+      }
+
+      span {
+        font-size: 14px;
+      }
     }
+  }
+
+  .settings {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 380px;
+
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50px;
+        object-fit: cover;
+      }
+
+      span {
+        font-size: 14px;
+      }
+    }
+  }
 }
