@@ -10,7 +10,7 @@ const Friends = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["friends", currentUser.id], // Include userId in the query key
     queryFn: () =>
-      makeRequest.get(`/relationships?userId=${currentUser.id}`).then((res) => res.data), // Pass userId in the query
+      makeRequest.get(`/friends/${currentUser.id}`).then((res) => res.data),
   });
 
   if (isLoading) return <div>Loading...</div>;
@@ -23,7 +23,18 @@ const Friends = () => {
         {data && data.length > 0 ? (
           data.map((friend) => (
             <div className="friend" key={friend.id}>
-              <img src={friend.profile_picture || "/default-profile.png"} alt="Profile" />
+             <img
+  src={
+    friend?.profile_picture?.startsWith("http")
+      ? friend.profile_picture
+      : friend?.profile_picture
+      ? "http://localhost:8800" + friend.profile_picture
+      : "/images/placeholder.jpg"
+  }
+  alt="Profile"
+/>
+
+
               <span>{friend.username}</span>
             </div>
           ))

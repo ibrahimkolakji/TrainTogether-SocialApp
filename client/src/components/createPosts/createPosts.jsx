@@ -1,77 +1,78 @@
-import React, { useContext, useState } from "react"; 
+import React, { useContext, useState } from "react";
 import "./createPost.scss";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AuthContext } from "../../context/authContext";
 import { makeRequest } from "../../axios";
 
 const CreatePosts = () => {
-  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [sportType, setSportType] = useState("");
+  const [file, setFile] = useState(null);
 
   const { currentUser } = useContext(AuthContext);
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (newPost) => makeRequest.post("/posts", newPost),
+    mutationFn: (formData) =>
+      makeRequest.post("/posts/create", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
+      setDescription("");
+      setSportType("");
+      setFile(null);
     },
   });
 
   const sportOptions = [
-    "Running",
-    "Cycling",
-    "Swimming",
-    "Gym",
-    "Yoga",
-    "Basketball",
-    "Soccer",
-    "Tennis",
-    "Other"
+    "Running", "Cycling", "Swimming", "Gym", "Yoga",
+    "Basketball", "Soccer", "Tennis", "Other"
   ];
 
   const handleClick = (e) => {
     e.preventDefault();
-    mutation.mutate({
-      title,
-      description,
-      sport_type: sportType,
-      userId: currentUser.id,
-    });
-  }
+    const formData = new FormData();
+    formData.append("description", description);
+    formData.append("sport_type", sportType);
+    if (file) formData.append("file", file);
+    mutation.mutate(formData);
+  };
 
   return (
     <div className="create-posts">
       <form className="create-post-form">
-        <h2>Create a New Post</h2>
-        <div className="form-group">
-          <label htmlFor="title">Title</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            placeholder="Enter post title"
-            onChange={(e) => setTitle(e.target.value)}
-            value={title}
-          />
-        </div>
-        <div className="form-group">
+        <h2>Share an Activity</h2>
+
+        <div className="form-group description-upload">
           <label htmlFor="description">Description</label>
-          <textarea
-            id="description"
-            name="description"
-            placeholder="Enter post description"
-            onChange={(e) => setDescription(e.target.value)}
-            value={description}
-          />
+          <div className="input-wrapper">
+            <textarea
+              id="description"
+              placeholder="What's on your mind?"
+              onChange={(e) => setDescription(e.target.value)}
+              value={description}
+            />
+            <label htmlFor="file-upload" className="image-upload-btn">📎</label>
+            <input
+              type="file"
+              accept="image/*"
+              id="file-upload"
+              style={{ display: "none" }}
+              onChange={(e) => setFile(e.target.files[0])}
+            />
+          </div>
+          {file && (
+            <div className="preview">
+              <img src={URL.createObjectURL(file)} alt="Preview" />
+            </div>
+          )}
         </div>
+
         <div className="form-group">
           <label htmlFor="sportType">Sport Type</label>
           <select
             id="sportType"
-            name="sportType"
             onChange={(e) => setSportType(e.target.value)}
             value={sportType}
           >
@@ -81,6 +82,7 @@ const CreatePosts = () => {
             ))}
           </select>
         </div>
+
         <button type="submit" className="submit-btn" onClick={handleClick}>
           Post
         </button>

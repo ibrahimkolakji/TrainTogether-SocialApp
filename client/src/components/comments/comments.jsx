@@ -36,7 +36,16 @@ const Comments = ({ postId }) => {
   return (
     <div className="comments">
       <div className="write">
-        <img src={currentUser.profile_picture} alt="" />
+        <img
+          src={
+            currentUser?.profile_picture?.startsWith("http")
+              ? currentUser.profile_picture
+              : currentUser?.profile_picture
+              ? "http://localhost:8800" + currentUser.profile_picture
+              : "/images/placeholder.jpg"
+          }
+          alt="Profile"
+        />
         <input
           type="text"
           placeholder="write a comment"
@@ -49,12 +58,24 @@ const Comments = ({ postId }) => {
         ? "Loading"
         : data.map((comment) => (
             <div className="comment" key={comment.id}>
-              <img src={comment.profile_picture} alt="" />
+              <img
+                src={
+                  currentUser?.profile_picture?.startsWith("http")
+                    ? currentUser.profile_picture
+                    : currentUser?.profile_picture
+                    ? "http://localhost:8800" + currentUser.profile_picture
+                    : "/images/placeholder.jpg"
+                }
+                alt="Profile"
+              />
+
               <div className="info">
                 <span>{comment.username}</span>
                 <p>{comment.comment}</p>
               </div>
-              <span className="date">{moment(comment.created_at).fromNow()}</span>
+              <span className="date">
+                {moment(comment.created_at).fromNow()}
+              </span>
             </div>
           ))}
     </div>

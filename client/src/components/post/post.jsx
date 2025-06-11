@@ -1,6 +1,6 @@
 import "./post.scss";
-import SportsGymnasticsOutlinedIcon from '@mui/icons-material/SportsGymnasticsOutlined';
-import HotelOutlinedIcon from '@mui/icons-material/HotelOutlined';
+import SportsGymnasticsOutlinedIcon from "@mui/icons-material/SportsGymnasticsOutlined";
+import HotelOutlinedIcon from "@mui/icons-material/HotelOutlined";
 import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -14,14 +14,16 @@ import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 
 const Post = ({ post }) => {
   const [commentOpen, setCommentOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false); // State for dropdown menu visibility
+  const [showModal, setShowModal] = useState(false); // State for modal visibility
   const { currentUser } = useContext(AuthContext);
+
+  const queryClient = useQueryClient();
 
   const { isLoading, error, data } = useQuery({
     queryKey: ["dabeiButton", post.id],
     queryFn: () =>
-      makeRequest
-        .get("/dabeiButton?postId=" + post.id)
-        .then((res) => res.data),
+      makeRequest.get("/dabeiButton?postId=" + post.id).then((res) => res.data),
   });
 
   // Sicher prüfen ob der aktuelle Nutzer geliked hat
@@ -39,20 +41,18 @@ const Post = ({ post }) => {
     Default: "🏅",
   };
 
-  const queryClient = useQueryClient();
-
   const mutation = useMutation({
-    mutationFn: (like) =>{
-        if (like) return makeRequest.delete("/dabeiButton?postId="+post.id);
-         return makeRequest.post("/dabeiButton", {postId:post.id});
+    mutationFn: (like) => {
+      if (like) return makeRequest.delete("/dabeiButton?postId=" + post.id);
+      return makeRequest.post("/dabeiButton", { postId: post.id });
     },
     onSuccess: () => {
-  queryClient.invalidateQueries({ queryKey: ["dabeiButton", post.id] });
-},
+      queryClient.invalidateQueries({ queryKey: ["dabeiButton", post.id] });
+    },
   });
   const handleLike = () => {
-    mutation.mutate(liked)
-  }
+    mutation.mutate(liked);
+  };
 
   const { data: commentsData, isLoading: commentsLoading } = useQuery({
     queryKey: ["commentsCount", post.id],
@@ -62,13 +62,31 @@ const Post = ({ post }) => {
 
   const commentsCount = commentsData ? commentsData.length : 0;
 
+  const deleteMutation = useMutation({
+    mutationFn: () => makeRequest.delete(`/posts/${post.id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      setShowModal(false); // Close modal after deletion
+    },
+  });
+
+  const handleDelete = () => {
+    deleteMutation.mutate();
+  };
+
   return (
     <div className="post">
       <div className="container">
         <div className="user">
           <img
-            src={post.profile_picture || "/default-profile.png"}
-            alt="Profile"
+            src={
+              post.profile_picture?.startsWith("http")
+                ? post.profile_picture
+                : post.profile_picture
+                ? "http://localhost:8800" + post.profile_picture
+                : "/images/placeholder.jpg"
+            }
+            alt="User"
             className="profile-picture"
           />
           <div className="details">
@@ -80,7 +98,15 @@ const Post = ({ post }) => {
             </Link>
             <span className="date">{moment(post.created_at).fromNow()}</span>
           </div>
-          <MoreHorizIcon className="dots" />
+          <MoreHorizIcon
+            className="dots"
+            onClick={() => setMenuOpen(!menuOpen)} // Toggle menu visibility
+          />
+          {menuOpen && (
+            <div className="menu">
+              <span onClick={() => setShowModal(true)}>Delete</span>
+            </div>
+          )}
         </div>
 
         <div className="content">
@@ -88,20 +114,32 @@ const Post = ({ post }) => {
             <span>{sportEmoji[post.sport_type] || sportEmoji.Default}</span>
             <span className="sport-type">{post.sport_type}</span>
           </div>
-          <h3 className="title">{post.title}</h3>
           <p className="description">{post.description}</p>
+
+          {post.image && (
+            <img
+              className="post-image"
+              src={
+                post.image.startsWith("http")
+                  ? post.image
+                  : "http://localhost:8800" + post.image
+              }
+              alt="Post media"
+            />
+          )}
         </div>
 
         <div className="info">
           <div className="item">
             {liked ? (
-              <SportsGymnasticsOutlinedIcon style={{ color: "red" }} onClick={handleLike} />
+              <SportsGymnasticsOutlinedIcon
+                style={{ color: "red" }}
+                onClick={handleLike}
+              />
             ) : (
-              <HotelOutlinedIcon onClick={handleLike}  />
+              <HotelOutlinedIcon onClick={handleLike} />
             )}
-            {!isLoading && data
-              ? `${data.length} Dabei`
-              : "Loading Likes..."}
+            {!isLoading && data ? `${data.length} Dabei` : "Loading Likes..."}
           </div>
 
           <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
@@ -118,6 +156,16 @@ const Post = ({ post }) => {
         </div>
 
         {commentOpen && <Comments postId={post.id} />}
+
+        {showModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <p>Are you sure you want to delete this post?</p>
+              <button onClick={handleDelete}>Yes</button>
+              <button onClick={() => setShowModal(false)}>No</button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

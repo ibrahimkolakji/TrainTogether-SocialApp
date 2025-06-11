@@ -31,7 +31,17 @@ const LeftBar = () => {
     <div className="leftBar">
       <div className="container">
         <Link to={`/profile/${currentUser.id}`} className="user">
-          <img src={currentUser.profile_picture} alt="" />
+          <img
+            src={
+              currentUser?.profile_picture?.startsWith("http")
+                ? currentUser.profile_picture
+                : currentUser?.profile_picture
+                ? "http://localhost:8800" + currentUser.profile_picture
+                : "/images/placeholder.jpg"
+            }
+            alt="Profile"
+          />
+
           <span>{currentUser.username}</span>
         </Link>
         <Link to="/friends" className="item">
@@ -49,10 +59,14 @@ const LeftBar = () => {
             <span>Settings</span>
           </div>
         </div>
-        <div className="item" onClick={handleLogout} style={{ cursor: "pointer" }}>
-            <img src={Logout} alt="Logout" />
-            <span>Logout</span>
-          </div>
+        <div
+          className="item"
+          onClick={handleLogout}
+          style={{ cursor: "pointer" }}
+        >
+          <img src={Logout} alt="Logout" />
+          <span>Logout</span>
+        </div>
       </div>
     </div>
   );

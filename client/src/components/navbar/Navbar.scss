@@ -1,70 +1,122 @@
 @import "../../style.scss";
-body{
-    background-color: white;
+
+body {
+  background-color: white;
 }
-.navbar{
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  height: 50px;
+  border-bottom: 1px solid #e0dbd6;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 999;
+
+  .left {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 10 20px;
-    height: 50px;
-    border-bottom: 1px solid #e0dbd6;
-    position: sticky;
-    top: 0;
-    background-color: white;	
-    z-index: 999;
-    .left{
-        display: flex;
-        align-items: center;
-        gap: 30px;
-        span{
-            font-weight: bold;
-            font-size: 20px;
-            color: brown;
-        }
-        .search{
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid #e0dbd6;
-            border-radius: 5px;
-            padding: 5px;
-             @include mobile{
-            display: none;
-          }
-          @include tablet{
-            width: 200px;
-          }
+    gap: 30px;
 
-            input{
-                border: none;
-                width: 500px;
-            }
-        }
-
+    span {
+      font-weight: bold;
+      font-size: 20px;
+      color: brown;
     }
 
-    .right{
-        display: flex;
-        align-items: center;
-        gap: 20px;
-         @include mobile{
+    .search {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid #e0dbd6;
+      border-radius: 5px;
+      padding: 5px;
+      background-color: #fff;
+
+      input {
+        border: none;
+        outline: none;
+        width: 300px;
+        font-size: 14px;
+
+        @include tablet {
+          width: 200px;
+        }
+      }
+
+      @include mobile {
         display: none;
       }
-        .user{
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 500;
-             @include tablet{
-          display: none;
+
+      .search-results {
+        position: absolute;
+        top: 110%; // place dropdown below input
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        max-height: 250px;
+        overflow-y: auto;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+        .search-result {
+          display: flex;
+          align-items: center;
+          padding: 8px 12px;
+          text-decoration: none;
+          color: #333;
+          transition: background-color 0.2s;
+
+          &:hover {
+            background-color: #f5f5f5;
+          }
+
+          img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+          }
+
+          span {
+            font-size: 14px;
+          }
         }
-            img{
-                width: 30px;
-                height: 30px;
-                border-radius: 50%;
-                object-fit: cover;
-            }
-        }
+      }
     }
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    @include mobile {
+      display: none;
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+
+      @include tablet {
+        display: none;
+      }
+
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+    }
+  }
 }

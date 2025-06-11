@@ -13,7 +13,6 @@ const getLikes = (req, res) => {
   });
 };
 
-// Like hinzufügen (aber nur, wenn noch nicht vorhanden)
 const addLike = (req, res) => {
   const token = req.cookies.access_token;
   if (!token) return res.status(401).json("You are not logged in");
@@ -32,6 +31,23 @@ const addLike = (req, res) => {
       const insertQuery = `INSERT INTO dabei (userId, postId) VALUES (?, ?)`;
       db.run(insertQuery, [userId, postId], function (err) {
         if (err) return res.status(500).json(err);
+
+        // After successfully liking, insert notification
+        db.get(
+          `SELECT user_id FROM posts WHERE id = ?`,
+          [postId],
+          (err, post) => {
+            if (!err && post && post.user_id !== userId) {
+              const nQuery = `
+                INSERT INTO notifications (recipient_id, sender_id, post_id, type, created_at)
+                VALUES (?, ?, ?, 'like', ?)
+              `;
+              db.run(nQuery, [post.user_id, userId, postId, new Date().toISOString()]);
+            }
+          }
+        );
+
+        // ✅ Final response only once
         return res.status(201).json({ message: "Like added", id: this.lastID });
       });
     });

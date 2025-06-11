@@ -8,7 +8,8 @@ const postRoutes = require('./routes/posts.js');
 const commentRoutes = require('./routes/comments.js');
 const dabeiButtonRoutes = require('./routes/dabeiButton.js');
 const relationshipRoutes = require('./routes/relationships.js'); // Ensure the route is imported correctly
-
+const friendRoutes = require('./routes/friends.js'); // Import the friends route if needed
+const notificationRoutes = require('./routes/notifications.js'); // Import the notifications route
 const app = express();
 
 // Middleware
@@ -32,11 +33,14 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/posts", postRoutes);
+app.use("/api/posts", postRoutes); // Ensure the route is registered correctly
 app.use("/api/comments", commentRoutes);
 app.use("/api/dabeiButton", dabeiButtonRoutes);
 app.use("/api/relationships", relationshipRoutes); // Ensure the route is registered correctly
-
+app.use("/api/friends", friendRoutes); 
+app.use("/uploads", express.static("uploads")); // Serve uploaded files statically
+app.use("/api/notifications", notificationRoutes);
+// Start the server
 app.listen(8800, () => {
   console.log("API Working on http://localhost:8800");
 });

@@ -1,6 +1,17 @@
 const moment = require("moment/moment.js");
 const db = require("../connect.js");
 const jwt = require("jsonwebtoken"); // JWT für Authentifizierung
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/posts");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+const upload = multer({ storage });
 
 const getPosts = (req, res) => {
   const token = req.cookies.access_token;
@@ -52,36 +63,66 @@ const getPosts = (req, res) => {
   });
 };
 
+
+
+
 const addPost = (req, res) => {
   const token = req.cookies.access_token;
-  if (!token) {
-    console.log("Kein Token gefunden!");
-    return res.status(401).json("You are not logged in");
-  }
+  if (!token) return res.status(401).json("You are not logged in");
 
   jwt.verify(token, "secretkey", (err, userInfo) => {
-    if (err) {
-      return res.status(403).json("Token is not valid");
-    }
+    if (err) return res.status(403).json("Token is not valid");
 
-    const q = `INSERT INTO posts (sport_type, title, description, created_at, user_id) VALUES (?, ?, ?, ?, ?)`;
+    const file = req.file ? `/uploads/posts/${req.file.filename}` : null; // Ensure file path is saved
+
+    const q = `
+      INSERT INTO posts (sport_type, description, created_at, user_id, image) 
+      VALUES (?, ?, ?, ?, ?)
+    `;
     const values = [
       req.body.sport_type,
-      req.body.title,
       req.body.description,
       moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
-      userInfo.id
+      userInfo.id,
+      file
     ];
 
     db.run(q, values, function (err) {
-      if (err) {
-        return res.status(500).json(err);
-      }
+      if (err) return res.status(500).json(err);
       return res.status(201).json({
-        message: "Post has been created successfully",
-        postId: this.lastID // SQLite: last inserted row ID
+        message: "Post created successfully",
+        postId: this.lastID,
+        image: file,
       });
     });
   });
 };
-module.exports = { getPosts, addPost };
+
+const deletePost = (req, res) => {
+  const token = req.cookies.access_token;
+  if (!token) return res.status(401).json("You are not logged in");
+
+  jwt.verify(token, "secretkey", (err, userInfo) => {
+    if (err) return res.status(403).json("Token is not valid");
+
+    const postId = req.params.id;
+    console.log("Post ID to delete:", postId); // Debugging log
+    console.log("Authenticated user ID:", userInfo.id); // Debugging log
+
+    const q = "DELETE FROM posts WHERE id = ? AND user_id = ?";
+    db.run(q, [postId, userInfo.id], function (err) {
+      if (err) {
+        console.error("Database Error:", err); // Log database errors
+        return res.status(500).json(err);
+      }
+      if (this.changes === 0) {
+        console.log("No post found or unauthorized"); // Debugging log
+        return res.status(404).json("Post not found or unauthorized");
+      }
+      console.log("Post deleted successfully"); // Debugging log
+      return res.status(200).json("Post deleted successfully");
+    });
+  });
+};
+
+module.exports = { getPosts, addPost, deletePost };

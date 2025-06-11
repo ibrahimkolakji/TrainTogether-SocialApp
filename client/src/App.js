@@ -8,6 +8,7 @@ import RightBar from './components/rightBar/rightBar';
 import Home from './pages/home/home';
 import Profile from './pages/profile/profile';
 import Friends from './pages/friends/friends';
+import Notifications from './pages/notification/notification';
 import { createBrowserRouter, RouterProvider, Route, Outlet, Navigate } from 'react-router-dom';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 
@@ -61,6 +62,10 @@ function App() {
         {
           path: 'friends',
           element: <Friends />
+        },
+        {
+          path: 'notifications',
+          element: <Notifications />
         }
       ]
     },
