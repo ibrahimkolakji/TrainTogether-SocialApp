@@ -97,10 +97,35 @@ const uploadProfilePic = (req, res) => {
   });
 };
 
+const getSuggestions = (req, res) => {
+  const token = req.cookies.access_token;
+  if (!token) return res.status(401).json("You are not logged in");
+
+  jwt.verify(token, "secretkey", (err, userInfo) => {
+    if (err) return res.status(403).json("Token is not valid");
+
+    const q = `
+      SELECT id, username, profile_picture 
+      FROM users 
+      WHERE id != ? AND id NOT IN (
+        SELECT followedUserId FROM relationships WHERE followerUserId = ?
+      )
+      LIMIT 5
+    `;
+    db.all(q, [userInfo.id, userInfo.id], (err, data) => {
+      if (err) return res.status(500).json(err);
+      return res.status(200).json(data);
+    });
+  });
+};
+
+
+
 module.exports = {
   getUser,
   searchUsers,
   updateUser,
   uploadProfilePic,
-  upload, // wichtig für die Middleware im Router
+  upload,
+  getSuggestions, // Add getSuggestions
 };

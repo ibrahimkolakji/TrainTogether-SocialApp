@@ -192,7 +192,7 @@ const Profile = () => {
       </div>
 
       <div className="profile-posts">
-        <h2>My Posts</h2>
+        <h2>Posts</h2>
         <Posts userId={userId} />
       </div>
     </div>
