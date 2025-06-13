@@ -2,6 +2,7 @@ const moment = require("moment/moment.js");
 const db = require("../connect.js");
 const jwt = require("jsonwebtoken"); // JWT für Authentifizierung
 const multer = require("multer");
+const emojiRegex = require("emoji-regex"); // Import emoji-regex library
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -75,16 +76,20 @@ const addPost = (req, res) => {
 
     const file = req.file ? `/uploads/posts/${req.file.filename}` : null; // Ensure file path is saved
 
+    const regex = emojiRegex(); // Initialize emoji regex
+    const containsEmoji = regex.test(req.body.description); // Check if description contains emojis
+
     const q = `
-      INSERT INTO posts (sport_type, description, created_at, user_id, image) 
-      VALUES (?, ?, ?, ?, ?)
+      INSERT INTO posts (sport_type, description, created_at, user_id, image, contains_emoji) 
+      VALUES (?, ?, ?, ?, ?, ?)
     `;
     const values = [
       req.body.sport_type,
       req.body.description,
       moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
       userInfo.id,
-      file
+      file,
+      containsEmoji ? 1 : 0 // Store whether the description contains emojis
     ];
 
     db.run(q, values, function (err) {
@@ -93,6 +98,7 @@ const addPost = (req, res) => {
         message: "Post created successfully",
         postId: this.lastID,
         image: file,
+        containsEmoji: containsEmoji,
       });
     });
   });

@@ -20,7 +20,7 @@ const Post = ({ post }) => {
 
   const queryClient = useQueryClient();
 
-  const { isLoading, error, data } = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: ["dabeiButton", post.id],
     queryFn: () =>
       makeRequest.get("/dabeiButton?postId=" + post.id).then((res) => res.data),

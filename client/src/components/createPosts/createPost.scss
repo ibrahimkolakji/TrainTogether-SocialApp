@@ -3,130 +3,130 @@
   justify-content: center;
   align-items: center;
   padding: 20px;
-  background-color: #f3f4f6;
+  background-color: rgba(238, 234, 232, 0.395);
 }
 
 .create-post-form {
   width: 100%;
   max-width: 600px;
-  background: #fff;
+  background: #ffffff; // White background for the form
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 
-.create-post-form h2 {
-  margin-bottom: 15px;
-  font-size: 20px;
-  color: #333;
-  text-align: center;
-}
-
-.form-group {
-  margin-bottom: 15px;
-
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 14px;
-    color: #555;
+  h2 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #007bff; // Sporty blue for the title
+    text-align: center;
   }
 
-  select {
+  .form-group {
+    margin-bottom: 15px;
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 16px;
+      background-color: #f9f9f9;
+      cursor: pointer;
+
+      &:focus {
+        border-color: #007bff;
+        outline: none;
+      }
+    }
+  }
+
+  .description-upload .input-wrapper {
+    position: relative;
+
+    textarea {
+      width: 100%;
+      padding: 10px 40px 10px 12px;
+      border: 1px solid #007bff; // Blue border for the textarea
+      border-radius: 8px;
+      font-size: 16px;
+      background-color: #fafafa;
+      resize: vertical;
+      min-height: 80px;
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+        border-color: #0056b3; // Darker blue on focus
+      }
+    }
+
+    .image-upload-btn {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      color: #007bff;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #0056b3;
+      }
+    }
+  }
+
+  .preview {
+    margin-top: 10px;
+
+    img {
+      max-width: 100%;
+      max-height: 250px;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  .submit-btn {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
+    padding: 10px 15px;
+    background-color: #28a745; // Green for the submit button
+    color: white;
+    border: none;
     border-radius: 6px;
-    font-size: 14px;
-    background-color: #f9f9f9;
+    font-size: 16px;
     cursor: pointer;
-
-    &:focus {
-      border-color: #007bff;
-      outline: none;
-    }
-  }
-}
-
-.description-upload .input-wrapper {
-  position: relative;
-
-  textarea {
-    width: 100%;
-    padding: 12px 40px 12px 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 14px;
-    background-color: #fafafa;
-    resize: vertical;
-    min-height: 80px;
-    box-sizing: border-box;
-
-    &:focus {
-      outline: none;
-      border-color: #007bff;
-    }
-  }
-
-  .image-upload-btn {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    cursor: pointer;
-    font-size: 18px;
-    color: #007bff;
-    transition: color 0.2s;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 
     &:hover {
-      color: #0056b3;
+      background-color: #218838; // Darker green on hover
+      transform: scale(1.03);
     }
-  }
-}
-
-.preview {
-  margin-top: 10px;
-
-  img {
-    max-width: 100%;
-    max-height: 250px;
-    border-radius: 10px;
-    object-fit: cover;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  }
-}
-
-.submit-btn {
-  width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-
-  &:hover {
-    background-color: #0056b3;
-    transform: scale(1.03);
   }
 }
 
 @media (max-width: 768px) {
   .create-post-form {
     padding: 15px;
-  }
 
-  .create-post-form h2 {
-    font-size: 18px;
-  }
+    h2 {
+      font-size: 18px;
+    }
 
-  .form-group select,
-  .submit-btn {
-    font-size: 12px;
-  }
+    .form-group select,
+    .submit-btn {
+      font-size: 12px;
+    }
 
-  .description-upload .input-wrapper textarea {
-    font-size: 13px;
+    .description-upload .input-wrapper textarea {
+      font-size: 13px;
+    }
   }
 }

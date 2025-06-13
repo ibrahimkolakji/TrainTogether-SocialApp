@@ -43,7 +43,7 @@ const Navbar = () => {
     <div className="navbar">
       <div className="left">
         <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-          <span>TrainTogether</span>
+          <span className="brand">TrainTogether</span> {/* Add class for styling */}
         </Link>
         <div className="search">
           <SearchRoundedIcon />
@@ -80,7 +80,7 @@ const Navbar = () => {
       </div>
 
       <div className="right">
-        
+        <span className="slogan">Find your team. Build your routine. 🏃‍♂️</span>
         <Link to="/notifications" className="item">
           <NotificationsActiveRoundedIcon />
         </Link>

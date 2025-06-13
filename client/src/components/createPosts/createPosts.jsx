@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import "./createPost.scss";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { AuthContext } from "../../context/authContext";
+
 import { makeRequest } from "../../axios";
 
 const CreatePosts = () => {
@@ -9,7 +9,6 @@ const CreatePosts = () => {
   const [sportType, setSportType] = useState("");
   const [file, setFile] = useState(null);
 
-  const { currentUser } = useContext(AuthContext);
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -49,7 +48,7 @@ const CreatePosts = () => {
           <div className="input-wrapper">
             <textarea
               id="description"
-              placeholder="What's on your mind?"
+              placeholder="Let's Workout Together! 🏋️"
               onChange={(e) => setDescription(e.target.value)}
               value={description}
             />

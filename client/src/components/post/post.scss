@@ -1,5 +1,5 @@
 .post {
-  background: #fff;
+  background: #ffffff; // White background for posts
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
@@ -26,6 +26,7 @@
       height: 40px;
       border-radius: 50%;
       object-fit: cover;
+      border: 2px solid #007bff; // Blue border for profile pictures
     }
 
     .details {
@@ -35,12 +36,12 @@
       .name {
         font-size: 16px;
         font-weight: bold;
-        color: #333;
+        color: #007bff; // Sporty blue for usernames
       }
 
       .date {
         font-size: 14px;
-        color: #777;
+        color: #6c757d; // Neutral gray for dates
       }
     }
 
@@ -81,10 +82,17 @@
     }
 
     .description {
-      font-size: 14px;
-      color: #555;
+      font-size: 18px; // Increase font size for post descriptions
+      color: #333; // Dark text for descriptions
       text-align: center; /* Center-align description */
-      line-height: 1.5;
+      line-height: 1.6; // Adjust line height for readability
+    }
+
+    .post-image {
+      width: 100%;
+      max-height: 450px; // Increase image height
+      object-fit: cover;
+      border: 2px solid #007bff; // Blue border for images
     }
   }
 
@@ -100,16 +108,16 @@
       align-items: center;
       gap: 5px;
       cursor: pointer;
-      color: #777;
-      font-size: 14px;
+      color: #007bff; // Blue for action items
+      font-size: 16px; // Increase font size for post actions
       transition: color 0.3s ease;
 
       svg {
-        font-size: 20px;
+        font-size: 24px; // Increase icon size
       }
 
       &:hover {
-        color: #333;
+        color: #0056b3; // Darker blue on hover
       }
 
       .liked {
@@ -240,4 +248,11 @@
   .post .content .description {
     font-size: 12px;
   }
+}
+
+.description.highlight-emoji {
+  background-color: #fffae6; // Light yellow background for emphasis
+  border: 1px solid #ffd700; // Gold border for emoji posts
+  padding: 10px;
+  border-radius: 6px;
 }

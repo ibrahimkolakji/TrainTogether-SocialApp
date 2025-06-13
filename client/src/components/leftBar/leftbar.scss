@@ -6,6 +6,9 @@
   top: 60px;
   height: calc(100vh - 70px);
   overflow: scroll;
+  background-color: #f0f4f8; // Light sporty blue background
+  border-radius: 10px; // Add rounded corners for a modern look
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
    @include mobile {
   width: 60px;
@@ -59,10 +62,12 @@
         height: 30px;
         border-radius: 50px;
         object-fit: cover;
+        border: 2px solid #007bff; // Blue border for profile pictures
       }
 
       span {
         font-size: 14px;
+        color: #007bff; // Sporty blue for usernames
       }
     }
 

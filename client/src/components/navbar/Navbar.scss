@@ -15,6 +15,7 @@ body {
   top: 0;
   background-color: white;
   z-index: 999;
+  border-radius: 5px;
 
   .left {
     display: flex;
@@ -100,7 +101,18 @@ body {
     @include mobile {
       display: none;
     }
-
+    .slogan{
+      font-size: 16px;
+      color: #6b482c; // Dark brown color for the slogan
+      font-weight: 500;
+      text-transform: uppercase; // Make the slogan uppercase for a sporty feel
+      letter-spacing: 1px; // Add spacing between letters
+      transition: color 0.3s ease;
+      &:hover {
+        color: #982002; // Change color on hover for emphasis
+      }
+      padding:150px;
+    }
     .user {
       display: flex;
       align-items: center;
@@ -117,6 +129,23 @@ body {
         border-radius: 50%;
         object-fit: cover;
       }
+    }
+  }
+
+  .brand {
+    font-size: 24px; // Increase font size for emphasis
+    font-weight: bold;
+    background: linear-gradient(90deg, #982002, #6b482c); // Add a gradient effect
+    background-clip: text; // Standard property for compatibility
+    -webkit-background-clip: text; // Webkit-specific property for older browsers
+    -webkit-text-fill-color: transparent; // Make the text transparent to show the gradient
+    text-transform: uppercase; // Make the text uppercase for a sporty feel
+    letter-spacing: 2px; // Add spacing between letters
+    transition: transform 0.3s ease, opacity 0.3s ease;
+
+    &:hover {
+      transform: scale(1.1); // Slight scaling effect on hover
+      opacity: 0.9; // Reduce opacity slightly on hover
     }
   }
 }
